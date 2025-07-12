@@ -12,7 +12,7 @@ class RecurringItem(BaseModel):
     name: str
     amount: float
     start_date: str
-    frequency: str # 'monthly', 'weekly', 'biweekly'
+    frequency: str # 'monthly', 'weekly', 'biweekly', 'last day of month'
 
 class ForecastRequest(BaseModel):
     starting_balance: float
@@ -89,6 +89,8 @@ def matches_frequency(date: datetime, item: RecurringItem) -> bool:
         return delta_days % 7 == 0
     elif item.frequency == "biweekly":
         return delta_days % 14 == 0
+    elif item.frequency == "last day of month":
+        return is_last_day_of_month(date)
     return False
 
 
